@@ -38,6 +38,7 @@ while (true)
         case 2:
             {
                 Library.AddBook(library);
+                UI.AwaitingInput();
                 break;
             }
         case 3:
