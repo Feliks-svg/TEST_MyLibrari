@@ -19,18 +19,8 @@ while (true)
         """);
     UI.Divider();
 
-    string input = Console.ReadLine();
-    if (string.IsNullOrWhiteSpace(input))
-    {
-        Console.WriteLine("Вы нажали Enter. Введите число!");
-        continue;
-    }
-    if (byte.TryParse(input, out byte userInput)) {}
-    else
-    {
-        Console.WriteLine("Неверный ввод!");
-        continue;
-    }
+    byte userInput = 0;
+    UI.BasicInput(ref userInput);
 
     switch (userInput)
     {
@@ -59,9 +49,7 @@ while (true)
             }
         case 6:
             {
-                Console.WriteLine("Закрытие...");
-                Thread.Sleep(1000);
-                return;
+                break;
             }
         case 7:
             {
@@ -69,7 +57,9 @@ while (true)
             }
         case 8:
             {
-                break;
+                Console.WriteLine("Закрытие...");
+                Thread.Sleep(1000);
+                return;
             }
         default:
             {
@@ -155,5 +145,21 @@ static class UI
     public static void Divider()
     {
         Console.WriteLine("------------------------------");
+    }
+
+    public static void BasicInput(ref byte byteInput)
+    {
+        string strInput = Console.ReadLine();
+        if (string.IsNullOrWhiteSpace(strInput))
+        {
+            Console.WriteLine("Вы нажали Enter. Введите число!");
+            return;
+        }
+        if (byte.TryParse(strInput, out byteInput)) { }
+        else
+        {
+            Console.WriteLine("Неверный ввод!");
+            return;
+        }
     }
 }
