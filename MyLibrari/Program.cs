@@ -1,4 +1,4 @@
-﻿List<Book> library = [];
+﻿HashSet<Book> library = [];
 
 while (true)
 {
@@ -94,30 +94,30 @@ class Book
 
 class Library
 {
-    public List<Book> bookInLibrary;
+    private HashSet<Book> _bookInLibrary;
 
-    public Library(List<Book> bookInLibrary) => bookInLibrary = [];
+    public Library(HashSet<Book> bookInLibrary) => bookInLibrary = [];
 
-    public void AddBook(List<Book> list)
+    public void AddBook(HashSet<Book> list)
     {
 
     }
 
-    public void BorrowBook(List<Book> list)
+    public void BorrowBook(HashSet<Book> list)
     {
 
     }
-    public void RemoveBook(List<Book> list)
-    {
-
-    }
-
-    public void EditBook(List<Book> list)
+    public void RemoveBook(HashSet<Book> list)
     {
 
     }
 
-    public void SearchBook(List<Book> list)
+    public void EditBook(HashSet<Book> list)
+    {
+
+    }
+
+    public void SearchBook(HashSet<Book> list)
     {
 
     }
@@ -125,7 +125,7 @@ class Library
 
 static class UI
 {
-    public static void ShowList(List<Book> list)
+    public static void ShowList(HashSet<Book> list)
     {
         foreach (Book item in list.OrderBy(i => i.Id))
         {
