@@ -1,4 +1,7 @@
-﻿HashSet<Book> library = [];
+﻿using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
+
+HashSet<Book> library = [];
 
 while (true)
 {
@@ -20,7 +23,7 @@ while (true)
     UI.Divider();
 
     byte userInput = 0;
-    UI.BasicInput(ref userInput);
+    DataHandler.BasicByteInput(ref userInput);
 
     switch (userInput)
     {
@@ -29,10 +32,13 @@ while (true)
                 Console.Clear();
                 Console.WriteLine("Вот список всех книг в библиотеке:");
                 UI.ShowList(library);
+                UI.Divider();
+                UI.AwaitingInput();
                 break;
             }
         case 2:
-            {    
+            {
+                Library.AddBook(library);
                 break;
             }
         case 3:
@@ -67,23 +73,21 @@ while (true)
                 break;
             }
     }
-
-    Console.WriteLine("Ожидание ввода...");
-    Console.ReadKey();
 }
 
 class Book
 {
     public int Id { get; set; }
+    private static ushort _nextId = 1;
     public string Title { get; set; }
     public string Author { get; set; }
     public ushort Year { get; set; }
     public string Genre { get; set; }
     public ushort Amount { get; set; }
 
-    public Book(int id, string title, string author, ushort year, string genre, ushort amount)
+    public Book(string title, string author, ushort year, string genre, ushort amount)
     {
-        Id = id;
+        Id = _nextId++;
         Title = title;
         Author = author;
         Year = year;
@@ -98,9 +102,41 @@ class Library
 
     public Library(HashSet<Book> bookInLibrary) => bookInLibrary = [];
 
-    public void AddBook(HashSet<Book> list)
+    static public void AddBook(HashSet<Book> list)
     {
+        string title = "";
+        string author = "";
+        ushort year = 0;
+        string genre = "";
+        ushort amount = 0;
 
+        Console.Clear();
+        Console.WriteLine("Введите параметры для добавления книги!");
+        UI.Divider();
+
+        Console.WriteLine("Введите название книги:");
+        DataHandler.StringDataAdder(ref title);
+        UI.Divider();
+
+        Console.WriteLine("Введите имя автора:");
+        DataHandler.StringDataAdder(ref author);
+        UI.Divider();
+
+        Console.WriteLine("Введите год создания:");
+        DataHandler.UshortDataAdder(ref year);
+        UI.Divider();
+
+        Console.WriteLine("Введите название жанра:");
+        DataHandler.StringDataAdder(ref genre);
+        UI.Divider();
+
+        Console.WriteLine("Введите количество экземпляров:");
+        DataHandler.UshortDataAdder(ref amount);
+        UI.Divider();
+
+        Console.WriteLine($"Книга под названием \"{title}\" успешно создана!");
+        Book newBook = new Book(title, author, year, genre, amount);
+        list.Add(newBook);
     }
 
     public void BorrowBook(HashSet<Book> list)
@@ -147,7 +183,16 @@ static class UI
         Console.WriteLine("------------------------------");
     }
 
-    public static void BasicInput(ref byte byteInput)
+    public static void AwaitingInput()
+    {
+        Console.WriteLine("Ожидание ввода...");
+        Console.ReadKey();
+    }
+}
+
+static class DataHandler
+{
+    public static void BasicByteInput(ref byte byteInput)
     {
         string strInput = Console.ReadLine();
         if (string.IsNullOrWhiteSpace(strInput))
@@ -160,6 +205,45 @@ static class UI
         {
             Console.WriteLine("Неверный ввод!");
             return;
+        }
+    }
+    static public void StringDataAdder(ref string input)
+    {
+        while (true)
+        {
+            input = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                Console.WriteLine("Входные данные не могут быть пустыми!");
+                continue;
+            }
+            if (!input.All(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c)))
+            {
+                Console.WriteLine("Входные данные могут содержать только буквы и цифры!");
+                continue;
+            }
+            break;
+        }
+    }
+
+    public static void UshortDataAdder(ref ushort input)
+    {
+        while (true)
+        {
+            try
+            {
+                input = Convert.ToUInt16(Console.ReadLine());
+                break;
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Введите корректное числовое значение!");
+            }
+            catch (OverflowException)
+            {
+                Console.WriteLine("Значение слишком большое или слишком маленькое!");
+            }
         }
     }
 }
