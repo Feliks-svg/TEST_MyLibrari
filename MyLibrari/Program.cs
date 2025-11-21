@@ -13,7 +13,9 @@ while (true)
          3. Редактировать данные книги
          4. Удалить книгу
          5. Найти книгу
-         6. Выйти
+         6. Загрузить библиотеку из текстового файла
+         7. Сохранить библиотеку в текстовый файл
+         8. Выйти
         """);
     UI.Divider();
 
@@ -60,6 +62,14 @@ while (true)
                 Console.WriteLine("Закрытие...");
                 Thread.Sleep(1000);
                 return;
+            }
+        case 7:
+            {
+                break;
+            }
+        case 8:
+            {
+                break;
             }
         default:
             {
@@ -118,6 +128,14 @@ class Library
     }
 
     public void SearchBook(HashSet<Book> list)
+    {
+
+    }
+}
+
+class FileHandler
+{
+    public void ReadTextFile(string path, HashSet<Book> list)
     {
 
     }
