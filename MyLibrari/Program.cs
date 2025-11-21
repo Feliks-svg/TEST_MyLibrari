@@ -22,8 +22,7 @@ while (true)
         """);
     UI.Divider();
 
-    byte userInput = 0;
-    DataHandler.BasicByteInput(ref userInput);
+    byte userInput = UI.SelectMenuOption();
 
     switch (userInput)
     {
@@ -169,6 +168,24 @@ class FileHandler
 
 static class UI
 {
+    public static byte SelectMenuOption()
+    {
+        while (true)
+        {
+            var keyInfo = Console.ReadKey(true);
+            char inputChar = keyInfo.KeyChar;
+
+            if (char.IsDigit(inputChar))
+            {
+                byte result = byte.Parse(inputChar.ToString());
+                return result;
+            }
+            else
+            {
+                Console.WriteLine("\nНеверный выбор. Введите цифру.");
+            }
+        }
+    }
     public static void ShowList(HashSet<Book> list)
     {
         foreach (Book item in list.OrderBy(i => i.Id))
@@ -192,21 +209,6 @@ static class UI
 
 static class DataHandler
 {
-    public static void BasicByteInput(ref byte byteInput)
-    {
-        string strInput = Console.ReadLine();
-        if (string.IsNullOrWhiteSpace(strInput))
-        {
-            Console.WriteLine("Вы нажали Enter. Введите число!");
-            return;
-        }
-        if (byte.TryParse(strInput, out byteInput)) { }
-        else
-        {
-            Console.WriteLine("Неверный ввод!");
-            return;
-        }
-    }
     static public void StringDataAdder(ref string input)
     {
         while (true)
