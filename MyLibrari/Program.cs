@@ -108,7 +108,10 @@ class Library
 {
     private HashSet<Book> _bookInLibrary;
 
-    public Library(HashSet<Book> bookInLibrary) => bookInLibrary = [];
+    public Library()
+    {
+        _bookInLibrary = new HashSet<Book>();
+    }
 
     static public void AddBook(HashSet<Book> list)
     {
