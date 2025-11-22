@@ -160,14 +160,33 @@ class Library
     {
 
     }
+}
 
-    static public void SearchBook(HashSet<Book> list)
+class LibrarySearcher
+{
+    public static void SearchById(HashSet<Book> list)
+    {
+
+    }
+    public static void SearchByTitile(HashSet<Book> list)
+    {
+
+    }
+    public static void SearchByAuthor(HashSet<Book> list)
+    {
+
+    }
+    public static void SearchByYear(HashSet<Book> list)
+    {
+
+    }
+    public static void SearchByGenre(HashSet<Book> list)
     {
 
     }
 }
 
-class FileHandler
+class LibraryFileHandler
 {
     public void ReadTextFile(string path, HashSet<Book> list)
     {
