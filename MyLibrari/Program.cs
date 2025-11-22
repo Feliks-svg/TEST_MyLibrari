@@ -2,6 +2,7 @@
 using static System.Net.Mime.MediaTypeNames;
 
 HashSet<Book> library = [];
+Book choosenBook = null;
 
 while (true)
 {
@@ -13,15 +14,17 @@ while (true)
         Что вы хотите сделать?
          1. Показать список книг
          2. Добавить книгу
-         3. Редактировать данные книги
-         4. Удалить книгу
-         5. Найти книгу
+         3. Редактировать данные выбранной книги
+         4. Удалить выбранную книгу
+         5. Найти и выбрать книгу
          6. Загрузить библиотеку из текстового файла
          7. Сохранить библиотеку в текстовый файл
          8. Выйти
         """);
+    if (choosenBook != null)
+        UI.ShowChoosenBook(choosenBook);
     UI.Divider();
-
+   
     byte userInput = UI.SelectMenuOption();
 
     switch (userInput)
@@ -92,6 +95,7 @@ class Book
     public ushort Year { get; set; }
     public string Genre { get; set; }
     public ushort Amount { get; set; }
+    public bool IsChoosen { get; set; }
 
     public Book(string title, string author, ushort year, string genre, ushort amount)
     {
@@ -101,6 +105,13 @@ class Book
         Year = year;
         Genre = genre;
         Amount = amount;
+        IsChoosen = false;
+    }
+
+    public bool IsChoosenMethod()
+    {
+        if (IsChoosen == true) return true;
+        else return false;
     }
 }
 
@@ -239,6 +250,12 @@ static class UI
     {
         Console.WriteLine("Ожидание ввода...");
         Console.ReadKey();
+    }
+
+    public static void ShowChoosenBook(Book book)
+    {
+        if ((book.IsChoosen == true) && book != null)
+            Console.WriteLine($"Выбрана книга: \"{book.Title}\"");
     }
 }
 
