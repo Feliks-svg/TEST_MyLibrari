@@ -43,22 +43,30 @@ while (true)
             }
         case 3:
             {
+                Library.EditBook(library);
+                UI.AwaitingInput();
                 break;
             }
         case 4:
             {
+                Library.RemoveBook(library);
+                UI.AwaitingInput();
                 break;
             }
         case 5:
             {
+                Console.WriteLine("Плейсхолдер найти книгу");
+                UI.AwaitingInput();
                 break;
             }
         case 6:
             {
+                Console.WriteLine("Плейсхолдер загрузки из текстовика");
                 break;
             }
         case 7:
             {
+                Console.WriteLine("плейсхолдре сохранения в текстовик");
                 break;
             }
         case 8:
@@ -139,21 +147,21 @@ class Library
         list.Add(newBook);
     }
 
-    public void BorrowBook(HashSet<Book> list)
+    static public void BorrowBook(HashSet<Book> list)
     {
 
     }
-    public void RemoveBook(HashSet<Book> list)
-    {
-
-    }
-
-    public void EditBook(HashSet<Book> list)
+    static public void RemoveBook(HashSet<Book> list)
     {
 
     }
 
-    public void SearchBook(HashSet<Book> list)
+    static public void EditBook(HashSet<Book> list)
+    {
+
+    }
+
+    static public void SearchBook(HashSet<Book> list)
     {
 
     }
