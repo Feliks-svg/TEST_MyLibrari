@@ -164,6 +164,10 @@ class Library
 
 class LibrarySearcher
 {
+    public static void SearchBook(HashSet<Book> list)
+    {
+
+    }
     public static void SearchById(HashSet<Book> list)
     {
 
