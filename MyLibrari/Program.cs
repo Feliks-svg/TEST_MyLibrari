@@ -4,29 +4,34 @@ using static System.Net.Mime.MediaTypeNames;
 HashSet<Book> library = [];
 Book choosenBook = null;
 
+library.Add(new Book("1", "1", 1, "1", 1));//Debug
+library.Add(new Book("2", "2", 2, "2", 2));//Debug
+library.Add(new Book("3", "3", 3, "3", 3));//Debug
+library.Add(new Book("4", "4", 4, "4", 4));//Debug
+
 while (true)
 {
-    Console.Clear();
-    Console.SetCursorPosition(0, 0);
+        Console.Clear();
+        Console.SetCursorPosition(0, 0);
 
-    Console.WriteLine("""
-        Добро пожаловать в MyLibrary!
-        Что вы хотите сделать?
-         1. Показать список книг
-         2. Добавить книгу
-         3. Редактировать данные выбранной книги
-         4. Удалить выбранную книгу
-         5. Найти и выбрать книгу
-         6. Загрузить библиотеку из текстового файла
-         7. Сохранить библиотеку в текстовый файл
-         8. Выйти
-        """);
-    if (choosenBook != null)
-        UI.ShowChoosenBook(choosenBook);
-    UI.Divider();
+        Console.WriteLine("""
+            Добро пожаловать в MyLibrary!
+            Что вы хотите сделать?
+             1. Показать список книг
+             2. Добавить книгу
+             3. Редактировать данные выбранной книги
+             4. Удалить выбранную книгу
+             5. Найти и выбрать книгу
+             6. Загрузить библиотеку из текстового файла
+             7. Сохранить библиотеку в текстовый файл
+             8. Выйти
+            """);
+        if (choosenBook != null)
+            UI.ShowChoosenBook(choosenBook);
+        UI.Divider();
    
-    byte userInput = UI.SelectMenuOption();
-    switch (userInput)
+        byte userInput = UI.SelectMenuOption();
+        switch (userInput)
     {
         case 1:
             {
@@ -59,7 +64,9 @@ while (true)
         case 5:
             {
                 Console.Clear();
-                LibrarySearcher.SearchBook(library);
+                Console.WriteLine($"Перед поиском: choosenBook = {(choosenBook == null ? "null" : choosenBook.Id.ToString())}");
+                LibrarySearcher.SearchBook(library, ref choosenBook);
+                Console.WriteLine($"После поиска: choosenBook = {(choosenBook == null ? "null" : choosenBook.Id.ToString())}");
                 UI.AwaitingInput();
                 break;
             }
@@ -178,7 +185,7 @@ class Library
 
 class LibrarySearcher
 {
-    public static void SearchBook(HashSet<Book> list)
+    public static void SearchBook(HashSet<Book> list, ref Book choosenBook)
     {
         Console.WriteLine("""
             Выберите параметр, по которому вы хотите найти желаемую книгу:
@@ -194,7 +201,7 @@ class LibrarySearcher
         {
             case 1:
                 Console.Clear();
-                SearchById(list);
+                SearchById(list, ref choosenBook);
                 break;
             case 2:
                 Console.Clear();
@@ -212,12 +219,44 @@ class LibrarySearcher
                 Console.Clear();
                 SearchByGenre(list);
                 break;
+            default:
+                Console.WriteLine("Неверный ввод!");
+                break;
         }
     }
-    public static void SearchById(HashSet<Book> list)
+    public static void SearchById(HashSet<Book> list, ref Book choosenBook)
     {
+        while (true)
+        {
+            Console.WriteLine("Введите идентификатор желаемой книги: ");
+            int userInput;
+            if (int.TryParse(Console.ReadLine(), out userInput))
+            {
+                Book foundBook = list.FirstOrDefault(b => b.Id == userInput);
 
+                if (foundBook != null)
+                {
+                    UI.ShowBook(foundBook);
+                    UI.Divider();
+                    Console.WriteLine("Хотите выбрать найденную книгу для дальнейшего взаимодействия? (y/n)");
+                    string userStrInput = Console.ReadLine();
+                    if (userStrInput.ToLower() != "y")
+                        break;
+                    else
+                    {
+                        choosenBook = foundBook;
+                        Console.WriteLine($"Кинга \"{choosenBook.Title}\" успешно выбрана!");
+                        break;
+                    }
+                }
+                else
+                    Console.WriteLine($"Не удалось найти книгу под идентификатором {userInput}");
+            }
+            else
+                Console.WriteLine("Неверный ввод!");
+        }
     }
+        
     public static void SearchByTitle(HashSet<Book> list)
     {
 
@@ -261,6 +300,7 @@ static class UI
             else
             {
                 Console.WriteLine("\nНеверный выбор. Введите цифру.");
+                AwaitingInput();
             }
         }
     }
@@ -272,6 +312,13 @@ static class UI
                               $" Автор: {item.Author}, Год издания:" +
                               $" {item.Year}, Жанр: {item.Genre}, Кол-во: {item.Amount}");
         }
+    }
+
+    public static void ShowBook(Book item)
+    {
+        Console.WriteLine($"Книга {item.Id}: {item.Title}," +
+                              $" Автор: {item.Author}, Год издания:" +
+                              $" {item.Year}, Жанр: {item.Genre}, Кол-во: {item.Amount}");
     }
     public static void Divider()
     {
