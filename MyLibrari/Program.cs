@@ -26,7 +26,6 @@ while (true)
     UI.Divider();
    
     byte userInput = UI.SelectMenuOption();
-
     switch (userInput)
     {
         case 1:
@@ -40,6 +39,7 @@ while (true)
             }
         case 2:
             {
+                Console.Clear();
                 Library.AddBook(library);
                 UI.AwaitingInput();
                 break;
@@ -132,7 +132,6 @@ class Library
         string genre = "";
         ushort amount = 0;
 
-        Console.Clear();
         Console.WriteLine("Введите параметры для добавления книги!");
         UI.Divider();
 
@@ -180,13 +179,50 @@ class LibrarySearcher
 {
     public static void SearchBook(HashSet<Book> list)
     {
+        Console.WriteLine("""
+            Выберите параметр, по которому вы хотите найти желаемую книгу:
+            1. По ID
+            2. По названию
+            3. По автору
+            4. По году
+            5. По жанру
+            """);
 
+        byte userInput = UI.SelectMenuOption();
+        switch (userInput)
+        {
+            case 1:
+                Console.Clear();
+                SearchById(list);
+                UI.AwaitingInput();
+                break;
+            case 2:
+                Console.Clear();
+                SearchByTitle(list);
+                UI.AwaitingInput();
+                break;
+            case 3:
+                Console.Clear();
+                SearchByAuthor(list);
+                UI.AwaitingInput();
+                break;
+            case 4:
+                Console.Clear();
+                SearchByYear(list);
+                UI.AwaitingInput();
+                break;
+            case 5:
+                Console.Clear();
+                SearchByGenre(list);
+                UI.AwaitingInput();
+                break;
+        }
     }
     public static void SearchById(HashSet<Book> list)
     {
 
     }
-    public static void SearchByTitile(HashSet<Book> list)
+    public static void SearchByTitle(HashSet<Book> list)
     {
 
     }
