@@ -221,16 +221,8 @@ class LibrarySearcher
                     UI.ShowBook(foundBook);
                     UI.Divider();
                     Console.WriteLine("Хотите выбрать найденную книгу для дальнейшего взаимодействия? (y/n)");
-                    string userStrInput = Console.ReadLine();
-                    if (userStrInput.ToLower() != "y")
-                        break;
-                    else
-                    {
-                        choosenBook = foundBook;
-                        choosenBook.IsChoosen = true;
-                        Console.WriteLine($"Кинга \"{choosenBook.Title}\" успешно выбрана!");
-                        break;
-                    }
+                    DataHandler.BookSelecter(foundBook, ref choosenBook);
+                    return;
                 }
                 else
                     Console.WriteLine($"Не удалось найти книгу под идентификатором {userInput}");
@@ -253,17 +245,8 @@ class LibrarySearcher
             {
                 UI.ShowBook(foundBook);
                 UI.Divider();
-                Console.WriteLine("Хотите выбрать найденную книгу для дальнейшего взаимодействия? (y/n)");
-                DataHandler.StringDataHandler(ref userInput);
-                if (userInput.ToLower() != "y")
-                    break;
-                else
-                {
-                    choosenBook = foundBook;
-                    choosenBook.IsChoosen = true;
-                    Console.WriteLine($"Кинга \"{choosenBook.Title}\" успешно выбрана!");
-                    break;
-                }
+                DataHandler.BookSelecter(foundBook, ref choosenBook);
+                return;
             }
             else
                 Console.WriteLine($"Не удалось найти книгу под названием {userInput}");
@@ -284,19 +267,12 @@ class LibrarySearcher
             else
                 Console.WriteLine($"Не удалось ни одной книги за авторством \"{userStrInput}\"");
 
+            UI.Divider();
+
             if (foundBooks.Count == 1 && foundBooks != null)
             {
-                Console.WriteLine("Хотите выбрать найденную книгу для дальнейшего взаимодействия? (y/n)");
-                DataHandler.StringDataHandler(ref userStrInput);
-                if (userStrInput.ToLower() != "y")
-                    break;
-                else
-                {
-                    choosenBook = foundBooks.FirstOrDefault();
-                    choosenBook.IsChoosen = true;
-                    Console.WriteLine($"Кинга \"{choosenBook.Title}\" успешно выбрана!");
-                    break;
-                }
+                DataHandler.BookSelecterHashSet(foundBooks, ref choosenBook);
+                return;
             }
             else if (foundBooks.Count > 1 && foundBooks != null)
             {
@@ -320,20 +296,12 @@ class LibrarySearcher
             else
                 Console.WriteLine($"Не удалось ни одной книги за авторством \"{userInput}\"");
 
+            UI.Divider();
+
             if (foundBooks.Count == 1 && foundBooks != null)
             {
-                Console.WriteLine("Хотите выбрать найденную книгу для дальнейшего взаимодействия? (y/n)");
-                string userStrInput = "";
-                DataHandler.StringDataHandler(ref userStrInput);
-                if (userStrInput.ToLower() != "y")
-                    break;
-                else
-                {
-                    choosenBook = foundBooks.FirstOrDefault();
-                    choosenBook.IsChoosen = true;
-                    Console.WriteLine($"Кинга \"{choosenBook.Title}\" успешно выбрана!");
-                    break;
-                }
+                DataHandler.BookSelecterHashSet(foundBooks, ref choosenBook);
+                return;
             }
             else if (foundBooks.Count > 1 && foundBooks != null)
             {
@@ -467,6 +435,34 @@ static class DataHandler
             {
                 Console.WriteLine("Значение слишком большое или слишком маленькое!");
             }
+        }
+    }
+    public static void BookSelecter(Book foundBook, ref Book choosenBook)
+    {
+        string userInput = "";
+        Console.WriteLine("Хотите выбрать найденную книгу для дальнейшего взаимодействия? (y/n)");
+        DataHandler.StringDataHandler(ref userInput);
+        if (userInput.ToLower() != "y")
+            return;
+        else
+        {
+            choosenBook = foundBook;
+            choosenBook.IsChoosen = true;
+            Console.WriteLine($"Кинга \"{choosenBook.Title}\" успешно выбрана!");
+        }
+    }
+    public static void BookSelecterHashSet(HashSet<Book> foundBooks, ref Book choosenBook)
+    {
+        string userInput = "";
+        Console.WriteLine("Хотите выбрать найденную книгу для дальнейшего взаимодействия? (y/n)");
+        DataHandler.StringDataHandler(ref userInput);
+        if (userInput.ToLower() != "y")
+            return;
+        else
+        {
+            choosenBook = foundBooks.FirstOrDefault();
+            choosenBook.IsChoosen = true;
+            Console.WriteLine($"Кинга \"{choosenBook.Title}\" успешно выбрана!");
         }
     }
 
