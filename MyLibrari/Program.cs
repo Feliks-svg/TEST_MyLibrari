@@ -107,13 +107,6 @@ class Book
 
 class Library
 {
-    private HashSet<Book> _bookInLibrary;
-
-    public Library()
-    {
-        _bookInLibrary = new HashSet<Book>();
-    }
-
     static public void AddBook(HashSet<Book> list)
     {
         string title = "";
