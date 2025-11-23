@@ -100,12 +100,6 @@ class Book
         Amount = amount;
         IsChoosen = false;
     }
-
-    public bool IsChoosenMethod()
-    {
-        if (IsChoosen == true) return true;
-        else return false;
-    }
 }
 
 class Library
@@ -129,23 +123,23 @@ class Library
         UI.Divider();
 
         Console.WriteLine("Введите название книги:");
-        DataHandler.StringDataAdder(ref title);
+        DataHandler.StringDataHandler(ref title);
         UI.Divider();
 
         Console.WriteLine("Введите имя автора:");
-        DataHandler.StringDataAdder(ref author);
+        DataHandler.StringDataHandler(ref author);
         UI.Divider();
 
         Console.WriteLine("Введите год создания:");
-        DataHandler.UshortDataAdder(ref year);
+        DataHandler.UshortDataHandler(ref year);
         UI.Divider();
 
         Console.WriteLine("Введите название жанра:");
-        DataHandler.StringDataAdder(ref genre);
+        DataHandler.StringDataHandler(ref genre);
         UI.Divider();
 
         Console.WriteLine("Введите количество экземпляров:");
-        DataHandler.UshortDataAdder(ref amount);
+        DataHandler.UshortDataHandler(ref amount);
         UI.Divider();
 
         Console.WriteLine($"Книга под названием \"{title}\" успешно создана!");
@@ -190,19 +184,19 @@ class LibrarySearcher
                 break;
             case 2:
                 Console.Clear();
-                SearchByTitle(list);
+                SearchByTitle(list, ref choosenBook);
                 break;
             case 3:
                 Console.Clear();
-                SearchByAuthor(list);
+                SearchByAuthor(list, ref choosenBook);
                 break;
             case 4:
                 Console.Clear();
-                SearchByYear(list);
+                SearchByYear(list, ref choosenBook);
                 break;
             case 5:
                 Console.Clear();
-                SearchByGenre(list);
+                SearchByGenre(list, ref choosenBook);
                 break;
             default:
                 Console.WriteLine("Неверный ввод!");
@@ -243,19 +237,45 @@ class LibrarySearcher
         }
     }
         
-    public static void SearchByTitle(HashSet<Book> list)
+    public static void SearchByTitle(HashSet<Book> list, ref Book choosenBook)
+    {
+        while (true)
+        {
+            Console.WriteLine("Введите название желаемой книги: ");
+            string userInput = "";
+            DataHandler.StringDataHandler(ref userInput);
+
+            Book foundBook = list.FirstOrDefault(b => b.Title == userInput);
+
+            if (foundBook != null)
+            {
+                UI.ShowBook(foundBook);
+                UI.Divider();
+                Console.WriteLine("Хотите выбрать найденную книгу для дальнейшего взаимодействия? (y/n)");
+                string userStrInput = Console.ReadLine();
+                if (userStrInput.ToLower() != "y")
+                    break;
+                else
+                {
+                    choosenBook = foundBook;
+                    choosenBook.IsChoosen = true;
+                    Console.WriteLine($"Кинга \"{choosenBook.Title}\" успешно выбрана!");
+                    break;
+                }
+            }
+            else
+                Console.WriteLine($"Не удалось найти книгу под названием {userInput}");
+        }
+    }                
+    public static void SearchByAuthor(HashSet<Book> list, ref Book choosenBook)
     {
 
     }
-    public static void SearchByAuthor(HashSet<Book> list)
+    public static void SearchByYear(HashSet<Book> list, ref Book choosenBook)
     {
 
     }
-    public static void SearchByYear(HashSet<Book> list)
-    {
-
-    }
-    public static void SearchByGenre(HashSet<Book> list)
+    public static void SearchByGenre(HashSet<Book> list, ref Book choosenBook)
     {
 
     }
@@ -343,7 +363,7 @@ static class UI
 
 static class DataHandler
 {
-    static public void StringDataAdder(ref string input)
+    static public void StringDataHandler(ref string input)
     {
         while (true)
         {
@@ -363,7 +383,7 @@ static class DataHandler
         }
     }
 
-    public static void UshortDataAdder(ref ushort input)
+    public static void UshortDataHandler(ref ushort input)
     {
         while (true)
         {
