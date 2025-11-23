@@ -365,7 +365,6 @@ static class UI
             else
             {
                 Console.WriteLine("\nНеверный выбор. Введите цифру.");
-                AwaitingInput();
             }
         }
     }
