@@ -7,31 +7,18 @@ Book choosenBook = null;
 library.Add(new Book("1", "1", 1, "1", 1));//Debug
 library.Add(new Book("2", "2", 2, "2", 2));//Debug
 library.Add(new Book("3", "3", 3, "3", 3));//Debug
-library.Add(new Book("4", "4", 4, "4", 4));//Debug
+library.Add(new Book("4", "4", 4, "4", 4));//Debugh
 
 while (true)
 {
-        Console.Clear();
-        Console.SetCursorPosition(0, 0);
+    Console.Clear();
+    Console.SetCursorPosition(0, 0);
 
-        Console.WriteLine("""
-            Добро пожаловать в MyLibrary!
-            Что вы хотите сделать?
-             1. Показать список книг
-             2. Добавить книгу
-             3. Редактировать данные выбранной книги
-             4. Удалить выбранную книгу
-             5. Найти и выбрать книгу
-             6. Загрузить библиотеку из текстового файла
-             7. Сохранить библиотеку в текстовый файл
-             8. Выйти
-            """);
-        if (choosenBook != null)
-            UI.ShowChoosenBook(choosenBook);
-        UI.Divider();
+    UI.ShowMenu(ref choosenBook);
+    UI.Divider();
    
-        byte userInput = UI.SelectMenuOption();
-        switch (userInput)
+    byte userInput = UI.SelectMenuOption();
+    switch (userInput)
     {
         case 1:
             {
@@ -64,9 +51,7 @@ while (true)
         case 5:
             {
                 Console.Clear();
-                Console.WriteLine($"Перед поиском: choosenBook = {(choosenBook == null ? "null" : choosenBook.Id.ToString())}");
                 LibrarySearcher.SearchBook(library, ref choosenBook);
-                Console.WriteLine($"После поиска: choosenBook = {(choosenBook == null ? "null" : choosenBook.Id.ToString())}");
                 UI.AwaitingInput();
                 break;
             }
@@ -245,6 +230,7 @@ class LibrarySearcher
                     else
                     {
                         choosenBook = foundBook;
+                        choosenBook.IsChoosen = true;
                         Console.WriteLine($"Кинга \"{choosenBook.Title}\" успешно выбрана!");
                         break;
                     }
@@ -335,6 +321,23 @@ static class UI
     {
         if ((book.IsChoosen == true) && book != null)
             Console.WriteLine($"Выбрана книга: \"{book.Title}\"");
+    }
+    public static void ShowMenu(ref Book choosenBook)
+    {
+        Console.WriteLine("""
+            Добро пожаловать в MyLibrary!
+            Что вы хотите сделать?
+             1. Показать список книг
+             2. Добавить книгу
+             3. Редактировать данные выбранной книги
+             4. Удалить выбранную книгу
+             5. Найти и выбрать книгу
+             6. Загрузить библиотеку из текстового файла
+             7. Сохранить библиотеку в текстовый файл
+             8. Выйти
+            """);
+        if (choosenBook != null)
+            UI.ShowChoosenBook(choosenBook);
     }
 }
 
