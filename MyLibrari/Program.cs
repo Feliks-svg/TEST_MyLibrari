@@ -220,7 +220,6 @@ class LibrarySearcher
                 {
                     UI.ShowBook(foundBook);
                     UI.Divider();
-                    Console.WriteLine("Хотите выбрать найденную книгу для дальнейшего взаимодействия? (y/n)");
                     DataHandler.BookSelecter(foundBook, ref choosenBook);
                     return;
                 }
@@ -312,7 +311,32 @@ class LibrarySearcher
     }
     public static void SearchByGenre(HashSet<Book> list, ref Book choosenBook)
     {
+        while (true)
+        {
+            Console.WriteLine("Введите жанр книги:");
+            string userInput = "";
+            DataHandler.StringDataHandler(ref userInput);
 
+            HashSet<Book> foundBooks = list.Where(b => b.Genre == userInput).ToHashSet();
+
+            if (foundBooks != null)
+                UI.ShowList(foundBooks);
+            else
+                Console.WriteLine($"Не удалось ни одной книги за авторством \"{userInput}\"");
+
+            UI.Divider();
+
+            if (foundBooks.Count == 1 && foundBooks != null)
+            {
+                DataHandler.BookSelecterHashSet(foundBooks, ref choosenBook);
+                return;
+            }
+            else if (foundBooks.Count > 1 && foundBooks != null)
+            {
+                DataHandler.BookSelecterMultiple(foundBooks, ref choosenBook);
+                return;
+            }
+        }
     }
 }
 
@@ -474,16 +498,21 @@ static class DataHandler
             int userInput;
             if (int.TryParse(Console.ReadLine(), out userInput))
             {
-                choosenBook = foundBooks.FirstOrDefault(b => b.Id == userInput);
-                if (choosenBook != null)
+                if (userInput != 0)
                 {
-                    choosenBook.IsChoosen = true;
-                    Console.WriteLine($"Книга \"{choosenBook.Title}\" успешно выбрана!");
+                    choosenBook = foundBooks.FirstOrDefault(b => b.Id == userInput);
+                    if (choosenBook != null)
+                    {
+                        choosenBook.IsChoosen = true;
+                        Console.WriteLine($"Книга \"{choosenBook.Title}\" успешно выбрана!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Нету книги с указанным идентификатором!");
+                    }
                 }
                 else
-                {
-                    Console.WriteLine("Нету книги с указанным идентификатором!");
-                }
+                    return;
             }
             else
                 Console.WriteLine("Невернный ввод!");
