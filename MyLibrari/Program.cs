@@ -300,33 +300,47 @@ class LibrarySearcher
             }
             else if (foundBooks.Count > 1 && foundBooks != null)
             {
-                while (true)
-                {
-                    Console.WriteLine("Введите идентификтор книги, которую вы хотите выбрать (0 для завершения): ");
-                    int userInput;
-                    if (int.TryParse(Console.ReadLine(), out userInput))
-                    {
-                        choosenBook = foundBooks.FirstOrDefault(b => b.Id == userInput);
-                        if (choosenBook != null)
-                        {
-                            choosenBook.IsChoosen = true;
-                            Console.WriteLine($"Книга \"{choosenBook.Title}\" успешно выбрана!");
-                            return;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Нету книги с указанным идентификатором!");
-                        }
-                    }
-                    else
-                        Console.WriteLine("Невернный ввод!");
-                }
+                DataHandler.BookSelecterMultiple(foundBooks, ref choosenBook);
+                return;
             }
         }
     }
     public static void SearchByYear(HashSet<Book> list, ref Book choosenBook)
     {
+        while (true)
+        {
+            Console.WriteLine("Введите год книги:");
+            ushort userInput = 0;
+            DataHandler.UshortDataHandler(ref userInput);
 
+            HashSet<Book> foundBooks = list.Where(b => b.Year == userInput).ToHashSet();
+
+            if (foundBooks != null)
+                UI.ShowList(foundBooks);
+            else
+                Console.WriteLine($"Не удалось ни одной книги за авторством \"{userInput}\"");
+
+            if (foundBooks.Count == 1 && foundBooks != null)
+            {
+                Console.WriteLine("Хотите выбрать найденную книгу для дальнейшего взаимодействия? (y/n)");
+                string userStrInput = "";
+                DataHandler.StringDataHandler(ref userStrInput);
+                if (userStrInput.ToLower() != "y")
+                    break;
+                else
+                {
+                    choosenBook = foundBooks.FirstOrDefault();
+                    choosenBook.IsChoosen = true;
+                    Console.WriteLine($"Кинга \"{choosenBook.Title}\" успешно выбрана!");
+                    break;
+                }
+            }
+            else if (foundBooks.Count > 1 && foundBooks != null)
+            {
+                DataHandler.BookSelecterMultiple(foundBooks, ref choosenBook);
+                return;
+            }
+        }
     }
     public static void SearchByGenre(HashSet<Book> list, ref Book choosenBook)
     {
@@ -368,7 +382,7 @@ static class UI
         foreach (Book item in list.OrderBy(i => i.Id))
         {
             Console.WriteLine($"Книга {item.Id}: {item.Title}," +
-                              $" Автор: {item.Author}, Год издания:" +
+                              $" Автор: {item.Author}, Год:" +
                               $" {item.Year}, Жанр: {item.Genre}, Кол-во: {item.Amount}");
         }
     }
@@ -376,7 +390,7 @@ static class UI
     public static void ShowBook(Book item)
     {
         Console.WriteLine($"Книга {item.Id}: {item.Title}," +
-                              $" Автор: {item.Author}, Год издания:" +
+                              $" Автор: {item.Author}, Год:" +
                               $" {item.Year}, Жанр: {item.Genre}, Кол-во: {item.Amount}");
     }
     public static void Divider()
@@ -453,6 +467,30 @@ static class DataHandler
             {
                 Console.WriteLine("Значение слишком большое или слишком маленькое!");
             }
+        }
+    }
+
+    public static void BookSelecterMultiple(HashSet<Book> foundBooks, ref Book choosenBook)
+    {
+        while (true)
+        {
+            Console.WriteLine("Введите идентификтор книги, которую вы хотите выбрать (0 для завершения): ");
+            int userInput;
+            if (int.TryParse(Console.ReadLine(), out userInput))
+            {
+                choosenBook = foundBooks.FirstOrDefault(b => b.Id == userInput);
+                if (choosenBook != null)
+                {
+                    choosenBook.IsChoosen = true;
+                    Console.WriteLine($"Книга \"{choosenBook.Title}\" успешно выбрана!");
+                }
+                else
+                {
+                    Console.WriteLine("Нету книги с указанным идентификатором!");
+                }
+            }
+            else
+                Console.WriteLine("Невернный ввод!");
         }
     }
 }
