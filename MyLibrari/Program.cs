@@ -58,7 +58,8 @@ while (true)
             }
         case 5:
             {
-                Console.WriteLine("Плейсхолдер найти книгу");
+                Console.Clear();
+                LibrarySearcher.SearchBook(library);
                 UI.AwaitingInput();
                 break;
             }
@@ -194,27 +195,22 @@ class LibrarySearcher
             case 1:
                 Console.Clear();
                 SearchById(list);
-                UI.AwaitingInput();
                 break;
             case 2:
                 Console.Clear();
                 SearchByTitle(list);
-                UI.AwaitingInput();
                 break;
             case 3:
                 Console.Clear();
                 SearchByAuthor(list);
-                UI.AwaitingInput();
                 break;
             case 4:
                 Console.Clear();
                 SearchByYear(list);
-                UI.AwaitingInput();
                 break;
             case 5:
                 Console.Clear();
                 SearchByGenre(list);
-                UI.AwaitingInput();
                 break;
         }
     }
