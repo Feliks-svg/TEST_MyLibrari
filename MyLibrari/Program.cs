@@ -41,34 +41,45 @@ while (true)
             }
         case 3:
             {
-                Library.EditBook(library);
+                Console.Clear();
+                Library.EditBook(library, ref choosenBook);
                 UI.AwaitingInput();
                 break;
             }
         case 4:
             {
-                Library.RemoveBook(library);
+                Console.Clear();
+                Library.BorrowBook(library, ref choosenBook);
                 UI.AwaitingInput();
                 break;
             }
         case 5:
             {
                 Console.Clear();
-                LibrarySearcher.SearchBook(library, ref choosenBook);
+                Library.RemoveBook(library, ref choosenBook);
                 UI.AwaitingInput();
                 break;
             }
         case 6:
             {
-                Console.WriteLine("Плейсхолдер загрузки из текстовика");
+                Console.Clear();
+                LibrarySearcher.SearchBook(library, ref choosenBook);
+                UI.AwaitingInput();
                 break;
             }
         case 7:
             {
-                Console.WriteLine("плейсхолдре сохранения в текстовик");
+                Console.Clear();
+                Console.WriteLine("Плейсхолдер загрузки из текстовика");
                 break;
             }
         case 8:
+            {
+                Console.Clear();
+                Console.WriteLine("плейсхолдре сохранения в текстовик");
+                break;
+            }
+        case 9:
             {
                 Console.WriteLine("Закрытие...");
                 Thread.Sleep(1000);
@@ -102,6 +113,12 @@ class Book
         Genre = genre;
         Amount = amount;
         IsChoosen = false;
+    }
+
+    public static bool CheckIfChoosen(Book choosenBook)
+    {
+        if (choosenBook == null) return false;
+        else return true;
     }
 }
 
@@ -143,19 +160,83 @@ class Library
         list.Add(newBook);
     }
 
-    static public void BorrowBook(HashSet<Book> list)
+    static public void BorrowBook(HashSet<Book> list, ref Book choosenBook)
     {
+        if (Book.CheckIfChoosen(choosenBook))
+        {
+
+        }
+        else
+            Console.WriteLine("Не выбрана книга для совершения действия!");
 
     }
-    static public void RemoveBook(HashSet<Book> list)
+    static public void RemoveBook(HashSet<Book> list, ref Book choosenBook)
     {
+        if (Book.CheckIfChoosen(choosenBook))
+        {
 
+        }
+        else
+            Console.WriteLine("Не выбрана книга для совершения действия!");
     }
 
-    static public void EditBook(HashSet<Book> list)
+    static public void EditBook(HashSet<Book> list, ref Book choosenBook)
     {
+        string userStrInput = "";
+        if (Book.CheckIfChoosen(choosenBook))
+        {
+            UI.ShowChoosenBook(choosenBook);
+            Console.WriteLine("""
+                Какой параметр книги вы хотите отредактировать?
+                1. Название
+                2. Автор
+                3. Год
+                4. Жанр
+                """);
+            UI.Divider();
 
+            ushort userInput = UI.SelectMenuOption();
+            switch (userInput)
+            {
+                case 1:
+                    Console.WriteLine("Введите новое название:");
+                    DataHandler.StringDataHandler(ref userStrInput);
+                    list.Remove(choosenBook);
+                    choosenBook.Title = userStrInput;
+                    list.Add(choosenBook);
+                    Console.WriteLine($"Название успешно заменено на \"{choosenBook.Title}\"");
+                    break;
+                case 2:
+                    Console.WriteLine("Введите нового автора:");
+                    DataHandler.StringDataHandler(ref userStrInput);
+                    list.Remove(choosenBook);
+                    choosenBook.Author = userStrInput;
+                    list.Add(choosenBook);
+                    Console.WriteLine($"Автор успешно замененён на \"{choosenBook.Author}\"");
+                    break;
+                case 3:
+                    Console.WriteLine("Введите новый год:");
+                    DataHandler.UshortDataHandler(ref userInput);
+                    list.Remove(choosenBook);
+                    choosenBook.Year = userInput;
+                    list.Add(choosenBook);
+                    Console.WriteLine($"Год успешно заменён на\"{choosenBook.Year}\"");
+                    break;
+                case 4:
+                    Console.WriteLine("Введите новый жанр:");
+                    DataHandler.StringDataHandler(ref userStrInput);
+                    list.Remove(choosenBook);
+                    choosenBook.Genre = userStrInput;
+                    list.Add(choosenBook);
+                    Console.WriteLine($"Жанр успешно замененён на \"{choosenBook.Genre}\"");
+                    break;
+            }
+        }
+        else
+            Console.WriteLine("Не выбрана книга для совершения действия!");
     }
+
+    
 }
 
 class LibrarySearcher
@@ -401,11 +482,12 @@ static class UI
              1. Показать список книг
              2. Добавить книгу
              3. Редактировать данные выбранной книги
-             4. Удалить выбранную книгу
-             5. Найти и выбрать книгу
-             6. Загрузить библиотеку из текстового файла
-             7. Сохранить библиотеку в текстовый файл
-             8. Выйти
+             4. Взять выбранную книгу
+             5. Удалить выбранную книгу
+             6. Найти и выбрать книгу
+             7. Загрузить библиотеку из текстового файла
+             8. Сохранить библиотеку в текстовый файл
+             9. Выйти
             """);
         if (choosenBook != null)
             UI.ShowChoosenBook(choosenBook);
