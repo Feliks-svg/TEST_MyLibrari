@@ -236,7 +236,7 @@ class Library
             UI.ShowBook(choosenBook);
             UI.Divider();
             Console.WriteLine($"Возможно вернуть {choosenBook.AmountOrigin - choosenBook.AmountLeft} экземпляров." +
-                              $" Введите желаемое количество экземлпяров для возврата: (0 для отмены)");
+                              $" Введите желаемое количество экземпляров для возврата: (0 для отмены)");
             ushort userInput = 0;
             while (true)
             {
@@ -244,7 +244,7 @@ class Library
 
                 if (userInput > choosenBook.AmountOrigin)
                 {
-                    Console.WriteLine("Невозможно вернуть экземлпяров больше изначального количества!");
+                    Console.WriteLine("Невозможно вернуть экземпляров больше изначального количества!");
                     continue;
                 }
                 else if (userInput == 0)
@@ -266,7 +266,9 @@ class Library
     {
         if (Book.CheckIfChoosen(choosenBook))
         {
-            Console.WriteLine("Вы действительно хотите удаить выбранную книгу? (y/n)");
+            UI.ShowBook(choosenBook);
+            UI.Divider();
+            Console.WriteLine("Вы действительно хотите удалить выбранную книгу? (y/n)");
             string userInput = "";
             DataHandler.StringDataHandler(ref userInput);
             if (userInput.ToLower() != "y")
@@ -467,7 +469,7 @@ class LibrarySearcher
             if (foundBooks != null)
                 UI.ShowList(foundBooks);
             else
-                Console.WriteLine($"Не удалось ни одной книги за авторством \"{userInput}\"");
+                Console.WriteLine($"Не удалось найти ни одной книги за авторством \"{userInput}\"");
 
             UI.Divider();
 
@@ -496,7 +498,7 @@ class LibrarySearcher
             if (foundBooks != null)
                 UI.ShowList(foundBooks);
             else
-                Console.WriteLine($"Не удалось ни одной книги за авторством \"{userInput}\"");
+                Console.WriteLine($"Не удалось найти ни одной книги за авторством \"{userInput}\"");
 
             UI.Divider();
 
