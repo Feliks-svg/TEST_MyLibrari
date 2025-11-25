@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using System.Collections.Generic;
+using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
 
 HashSet<Book> library = [];
@@ -48,7 +49,7 @@ while (true)
         case 4:
             {
                 Console.Clear();
-                Library.BorrowBook(library, ref choosenBook);
+                Library.BorrowBookMenuOption(library, ref choosenBook);
                 UI.AwaitingInput();
                 break;
             }
@@ -163,20 +164,76 @@ class Library
         list.Add(newBook);
     }
 
+    static public void BorrowBookMenuOption(HashSet<Book> list, ref Book choosenBook)
+    {
+        var userInput = "";
+        if (Book.CheckIfChoosen(choosenBook))
+        {
+            UI.ShowBook(choosenBook);
+            if (choosenBook.AmountLeft < choosenBook.AmountOrigin)
+            {
+                Console.WriteLine("Возможно вернуть позаимствованный экземпляр книги в библиотеку! Желаете продолжить? (y/n)");
+                DataHandler.StringDataHandler(ref userInput);
+                if (userInput.ToLower() == "y")
+                {
+                    Console.Clear();
+                    ReturnBook(list, ref choosenBook);
+                    return;
+                }
+            }
+            
+            if (choosenBook.AmountLeft > 0)
+            {
+                Console.Clear();
+                BorrowBook(list, ref choosenBook);
+                return;
+            }
+            else
+                Console.WriteLine("Нету доступных экземпляров книги!");
+        }
+        else
+            Console.WriteLine("Не выбрана книга для совершения действия!");
+    }
     static public void BorrowBook(HashSet<Book> list, ref Book choosenBook)
     {
         if (Book.CheckIfChoosen(choosenBook))
         {
-            if (choosenBook.AmountOrigin > 0)
+            UI.ShowBook(choosenBook);
+            UI.Divider();
+            Console.WriteLine("Сколько экземпляров книги вы хотите позаимствовать? (0 для отмены)");
+            while (true)
             {
+                ushort userInput = 0;
+                DataHandler.UshortDataHandler(ref userInput);
 
+                if (userInput > choosenBook.AmountLeft)
+                {
+                    Console.WriteLine("Невозможно взять больше книг, чем осталось в библиотеке!");
+                    continue;
+                }
+                else if (userInput == 0)
+                    break;
+                else
+                {
+                    list.Remove(choosenBook);
+                    choosenBook.AmountLeft -= userInput;
+                    list.Add(choosenBook);
+                    Console.WriteLine($"Успешно позаимствована книга \"{choosenBook.Title}\" в количестве {userInput}");
+                    break;
+                }
             }
-            else
-                Console.WriteLine("Нету доступных ");
         }
         else
             Console.WriteLine("Не выбрана книга для совершения действия!");
+    }
+    static public void ReturnBook(HashSet<Book> list, ref Book choosenBook)
+    {
+        if (Book.CheckIfChoosen(choosenBook))
+        {
 
+        }
+        else
+            Console.WriteLine("Не выбрана книга для совершения действия!");
     }
     static public void RemoveBook(HashSet<Book> list, ref Book choosenBook)
     {
@@ -253,8 +310,6 @@ class Library
         else
             Console.WriteLine("Не выбрана книга для совершения действия!");
     }
-
-    
 }
 
 class LibrarySearcher
@@ -500,7 +555,7 @@ static class UI
              1. Показать список книг
              2. Добавить книгу
              3. Редактировать данные выбранной книги
-             4. Взять выбранную книгу
+             4. Взять/Вернуть выбранную книгу
              5. Удалить выбранную книгу
              6. Найти и выбрать книгу
              7. Загрузить библиотеку из текстового файла
