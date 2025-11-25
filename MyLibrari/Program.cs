@@ -352,6 +352,7 @@ class LibrarySearcher
             3. По автору
             4. По году
             5. По жанру
+            6. Выйти
             """);
 
         byte userInput = UI.SelectMenuOption();
@@ -376,6 +377,8 @@ class LibrarySearcher
             case 5:
                 Console.Clear();
                 SearchByGenre(list, ref choosenBook);
+                break;
+            case 6:
                 break;
             default:
                 Console.WriteLine("Неверный ввод!");
