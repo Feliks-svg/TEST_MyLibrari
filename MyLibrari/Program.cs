@@ -101,7 +101,8 @@ class Book
     public string Author { get; set; }
     public ushort Year { get; set; }
     public string Genre { get; set; }
-    public ushort Amount { get; set; }
+    public ushort AmountOrigin { get; set; }
+    public ushort AmountLeft { get; set; }
     public bool IsChoosen { get; set; }
 
     public Book(string title, string author, ushort year, string genre, ushort amount)
@@ -111,8 +112,9 @@ class Book
         Author = author;
         Year = year;
         Genre = genre;
-        Amount = amount;
+        AmountOrigin = amount;
         IsChoosen = false;
+        AmountLeft = amount;
     }
 
     public static bool CheckIfChoosen(Book choosenBook)
@@ -156,7 +158,7 @@ class Library
         UI.Divider();
 
         Console.WriteLine($"Книга под названием \"{title}\" успешно создана!");
-        Book newBook = new Book(title, author, year, genre, amount);
+        Book newBook = new(title, author, year, genre, amount);
         list.Add(newBook);
     }
 
@@ -164,7 +166,12 @@ class Library
     {
         if (Book.CheckIfChoosen(choosenBook))
         {
+            if (choosenBook.AmountOrigin > 0)
+            {
 
+            }
+            else
+                Console.WriteLine("Нету доступных ");
         }
         else
             Console.WriteLine("Не выбрана книга для совершения действия!");
@@ -458,7 +465,7 @@ static class UI
         {
             Console.WriteLine($"Книга {item.Id}: {item.Title}," +
                               $" Автор: {item.Author}, Год:" +
-                              $" {item.Year}, Жанр: {item.Genre}, Кол-во: {item.Amount}");
+                              $" {item.Year}, Жанр: {item.Genre}, Кол-во: {item.AmountLeft}/{item.AmountOrigin}");
         }
     }
 
@@ -466,7 +473,7 @@ static class UI
     {
         Console.WriteLine($"Книга {item.Id}: {item.Title}," +
                               $" Автор: {item.Author}, Год:" +
-                              $" {item.Year}, Жанр: {item.Genre}, Кол-во: {item.Amount}");
+                              $" {item.Year}, Жанр: {item.Genre}, Кол-во: {item.AmountLeft}/{item.AmountOrigin}");
     }
     public static void Divider()
     {
