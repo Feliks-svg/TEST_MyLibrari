@@ -26,9 +26,8 @@ while (true)
         case 1:
             {
                 Console.Clear();
-                Console.WriteLine("Вот список всех книг в библиотеке:");
+                Console.WriteLine("Cписок всех книг в библиотеке:");
                 UI.ShowList(library);
-                UI.Divider();
                 UI.AwaitingInput();
                 break;
             }
@@ -71,12 +70,14 @@ while (true)
             {
                 Console.Clear();
                 Console.WriteLine("Плейсхолдер загрузки из текстовика");
+                UI.AwaitingInput();
                 break;
             }
         case 8:
             {
                 Console.Clear();
                 Console.WriteLine("плейсхолдре сохранения в текстовик");
+                UI.AwaitingInput();
                 break;
             }
         case 9:
