@@ -166,13 +166,15 @@ class Library
 
     static public void BorrowBookMenuOption(HashSet<Book> list, ref Book choosenBook)
     {
-        var userInput = "";
         if (Book.CheckIfChoosen(choosenBook))
         {
             UI.ShowBook(choosenBook);
             if (choosenBook.AmountLeft < choosenBook.AmountOrigin)
             {
-                Console.WriteLine("Возможно вернуть позаимствованный экземпляр книги в библиотеку! Желаете продолжить? (y/n)");
+                UI.Divider();
+                Console.WriteLine($"Возможно вернуть экземпляр книги в размере {choosenBook.AmountOrigin - choosenBook.AmountLeft}!" +
+                                  $" Желаете продолжить? (y/n)");
+                var userInput = "";
                 DataHandler.StringDataHandler(ref userInput);
                 if (userInput.ToLower() == "y")
                 {
@@ -181,7 +183,7 @@ class Library
                     return;
                 }
             }
-            
+
             if (choosenBook.AmountLeft > 0)
             {
                 Console.Clear();
@@ -201,9 +203,10 @@ class Library
             UI.ShowBook(choosenBook);
             UI.Divider();
             Console.WriteLine("Сколько экземпляров книги вы хотите позаимствовать? (0 для отмены)");
+            ushort userInput = 0;
             while (true)
             {
-                ushort userInput = 0;
+                
                 DataHandler.UshortDataHandler(ref userInput);
 
                 if (userInput > choosenBook.AmountLeft)
@@ -230,7 +233,31 @@ class Library
     {
         if (Book.CheckIfChoosen(choosenBook))
         {
+            UI.ShowBook(choosenBook);
+            UI.Divider();
+            Console.WriteLine($"Возможно вернуть {choosenBook.AmountOrigin - choosenBook.AmountLeft} экземпляров." +
+                              $" Введите желаемое количество экземлпяров для возврата: (0 для отмены)");
+            ushort userInput = 0;
+            while (true)
+            {
+                DataHandler.UshortDataHandler(ref userInput);
 
+                if (userInput > choosenBook.AmountOrigin)
+                {
+                    Console.WriteLine("Невозможно вернуть экземлпяров больше изначального количества!");
+                    continue;
+                }
+                else if (userInput == 0)
+                    break;
+                else
+                {
+                    list.Remove(choosenBook);
+                    choosenBook.AmountLeft += userInput;
+                    list.Add(choosenBook);
+                    Console.WriteLine($"Успешно возвращена книга \"{choosenBook.Title}\" в количестве {userInput}");
+                    break;
+                }    
+            }
         }
         else
             Console.WriteLine("Не выбрана книга для совершения действия!");
