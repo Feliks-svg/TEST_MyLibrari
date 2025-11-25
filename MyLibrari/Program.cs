@@ -63,7 +63,7 @@ while (true)
         case 6:
             {
                 Console.Clear();
-                LibrarySearcher.SearchBook(library, ref choosenBook);
+                LibrarySearcher.SearchBookMenuOption(library, ref choosenBook);
                 UI.AwaitingInput();
                 break;
             }
@@ -343,7 +343,7 @@ class Library
 
 class LibrarySearcher
 {
-    public static void SearchBook(HashSet<Book> list, ref Book choosenBook)
+    public static void SearchBookMenuOption(HashSet<Book> list, ref Book choosenBook)
     {
         Console.WriteLine("""
             Выберите параметр, по которому вы хотите найти желаемую книгу:
@@ -693,5 +693,135 @@ static class DataHandler
             else
                 Console.WriteLine("Невернный ввод!");
         }
+    }
+}
+
+static class Loc
+{
+    private static string _lang = "ru"; // "ru" or "en"
+
+    private static readonly Dictionary<string, (string ru, string en)> _dict = new()
+    {
+        {"invalid_choice_digit", ("\nНеверный выбор. Введите цифру.", "\nInvalid choice. Enter a digit.")},
+        {"menu_text", (
+            // RU
+@"Добро пожаловать в MyLibrary!
+Что вы хотите сделать?
+ 1. Показать список книг
+ 2. Добавить книгу
+ 3. Редактировать данные выбранной книги
+ 4. Взять/Вернуть выбранную книгу
+ 5. Удалить выбранную книгу
+ 6. Найти и выбрать книгу
+ 7. Загрузить библиотеку из текстового файла
+ 8. Сохранить библиотеку в текстовый файл
+ 9. Выйти",
+            // EN
+@"Welcome to MyLibrary!
+What do you want to do?
+ 1. Show list of books
+ 2. Add a book
+ 3. Edit selected book data
+ 4. Borrow/Return selected book
+ 5. Remove selected book
+ 6. Find and select a book
+ 7. Load library from text file
+ 8. Save library to text file
+ 9. Exit"
+        )},
+        {"list_all_books", ("Cписок всех книг в библиотеке:", "List of all books in the library:")},
+        {"enter_params", ("Введите параметры для добавления книги!", "Enter parameters to add a book!")},
+        {"enter_title", ("Введите название книги:", "Enter book title:")},
+        {"enter_author", ("Введите имя автора:", "Enter author name:")},
+        {"enter_year", ("Введите год создания:", "Enter year of publication:")},
+        {"enter_genre", ("Введите название жанра:", "Enter genre name:")},
+        {"enter_amount", ("Введите количество экземпляров:", "Enter number of copies:")},
+        {"book_created", ("Книга под названием \"{0}\" успешно создана!", "Book titled \"{0}\" created successfully!")},
+        {"return_possible", ("Возможно вернуть экземпляр книги в размере {0}! Желаете продолжить? (y/n)", "You can return up to {0} copies! Continue? (y/n)")},
+        {"no_copies_available", ("Нету доступных экземпляров книги!", "No copies available!")},
+        {"no_book_selected", ("Не выбрана книга для совершения действия!", "No book selected for action!")},
+        {"how_many_borrow", ("Сколько экземпляров книги вы хотите позаимствовать? (0 для отмены)", "How many copies would you like to borrow? (0 to cancel)")},
+        {"cannot_borrow_more", ("Невозможно взять больше книг, чем осталось в библиотеке!", "Cannot borrow more copies than available!")},
+        {"success_borrowed", ("Успешно позаимствована книга \"{0}\" в количестве {1}", "Successfully borrowed \"{0}\" in amount {1}")},
+        {"possible_return", ("Возможно вернуть {0} экземпляров. Введите желаемое количество экземпляров для возврата: (0 для отмены)", "You can return up to {0} copies. Enter amount to return: (0 to cancel)")},
+        {"cannot_return_more", ("Невозможно вернуть экземпляров больше изначального количества!", "Cannot return more than original amount!")},
+        {"success_returned", ("Успешно возвращена книга \"{0}\" в количестве {1}", "Successfully returned \"{0}\" amount {1}")},
+        {"confirm_delete", ("Вы действительно хотите удалить выбранную книгу? (y/n)", "Do you really want to delete the selected book? (y/n)")},
+        {"success_deleted", ("Книга под названием \"{0}\" успешно удалена!", "Book titled \"{0}\" successfully deleted!")},
+        {"edit_prompt", (
+@"Какой параметр книги вы хотите отредактировать?
+1. Название
+2. Автор
+3. Год
+4. Жанр",
+@"Which parameter do you want to edit?
+1. Title
+2. Author
+3. Year
+4. Genre"
+        )},
+        {"enter_new_title", ("Введите новое название:", "Enter new title:")},
+        {"title_changed", ("Название успешно заменено на \"{0}\"", "Title changed to \"{0}\"")},
+        {"enter_new_author", ("Введите нового автора:", "Enter new author:")},
+        {"author_changed", ("Автор успешно замененён на \"{0}\"", "Author changed to \"{0}\"")},
+        {"enter_new_year", ("Введите новый год:", "Enter new year:")},
+        {"year_changed", ("Год успешно заменён на\"{0}\"", "Year changed to \"{0}\"")},
+        {"enter_new_genre", ("Введите новый жанр:", "Enter new genre:")},
+        {"genre_changed", ("Жанр успешно замененён на \"{0}\"", "Genre changed to \"{0}\"")},
+        {"search_choice", (
+@"Выберите параметр, по которому вы хотите найти желаемую книгу:
+1. По ID
+2. По названию
+3. По автору
+4. По году
+5. По жанру",
+@"Select parameter to search by:
+1. By ID
+2. By title
+3. By author
+4. By year
+5. By genre"
+        )},
+        {"enter_id", ("Введите идентификатор желаемой книги: ", "Enter desired book ID: ")},
+        {"not_found_id", ("Не удалось найти книгу под идентификатором {0}", "Could not find a book with ID {0}")},
+        {"enter_title_search", ("Введите название желаемой книги: ", "Enter desired book title: ")},
+        {"not_found_title", ("Не удалось найти книгу под названием {0}", "Could not find a book titled {0}")},
+        {"enter_author_search", ("Введите имя и фамилию автора:", "Enter author name:")},
+        {"no_books_by_author", ("Не удалось ни одной книги за авторством \"{0}\"", "No books by author \"{0}\"")},
+        {"enter_year_search", ("Введите год книги:", "Enter book year:")},
+        {"no_books_by_year", ("Не удалось найти ни одной книги за год {0}", "No books found for year {0}")},
+        {"enter_genre_search", ("Введите жанр книги:", "Enter genre:")},
+        {"no_books_by_genre", ("Не удалось найти ни одной книги по жанру \"{0}\"", "No books found for genre \"{0}\"")},
+        {"invalid_input", ("Неверный ввод!", "Invalid input!") },
+        {"press_any_key", ("Ожидание ввода...", "Press any key to continue...")},
+        {"show_chosen_book", ("Выбрана книга: \"{0}\"", "Selected book: \"{0}\"")},
+        {"want_select_found", ("Хотите выбрать найденную книгу для дальнейшего взаимодействия? (y/n)", "Do you want to select the found book for further actions? (y/n)")},
+        {"book_selected_success", ("Книга \"{0}\" успешно выбрана!", "Book \"{0}\" successfully selected!")},
+        {"enter_id_to_select", ("Введите идентификтор книги, которую вы хотите выбрать (0 для завершения): ", "Enter ID of the book you want to select (0 to finish): ")},
+        {"no_book_with_id", ("Нету книги с указанным идентификатором!", "No book with specified ID!")},
+        {"invalid_number", ("Введите корректное числовое значение!", "Enter a valid numeric value!")},
+        {"overflow_number", ("Значение слишком большое или слишком маленькое!", "Value too large or too small!")},
+        {"empty_input", ("Входные данные не могут быть пустыми!", "Input cannot be empty!")},
+        {"only_letters_digits", ("Входные данные могут содержать только буквы и цифры!", "Input may contain only letters, digits and spaces!")},
+        {"goodbye", ("Закрытие...", "Closing...")},
+        {"placeholder_load", ("Плейсхолдер загрузки из текстовика", "Placeholder for loading from a text file")},
+        {"placeholder_save", ("плейсхолдре сохранения в текстовик", "Placeholder for saving to a text file")},
+        // Format for displaying book info: {0}=Id {1}=Title {2}=Author {3}=Year {4}=Genre {5}=Left {6}=Origin
+        {"book_line_format", ("Книга {0}: {1}, Автор: {2}, Год: {3}, Жанр: {4}, Кол-во: {5}/{6}", "Book {0}: {1}, Author: {2}, Year: {3}, Genre: {4}, Amount: {5}/{6}")},
+    };
+
+    public static void SetLanguage(string code)
+    {
+        if (code == "en") _lang = "en";
+        else _lang = "ru";
+    }
+
+    public static string T(string key)
+    {
+        if (_dict.TryGetValue(key, out var pair))
+        {
+            return _lang == "en" ? pair.en : pair.ru;
+        }
+        return key;
     }
 }
