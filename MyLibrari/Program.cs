@@ -174,7 +174,17 @@ class Library
     {
         if (Book.CheckIfChoosen(choosenBook))
         {
-
+            Console.WriteLine("Вы действительно хотите удаить выбранную книгу? (y/n)");
+            string userInput = "";
+            DataHandler.StringDataHandler(ref userInput);
+            if (userInput.ToLower() != "y")
+                return;
+            else
+            {
+                list.Remove(choosenBook);
+                Console.WriteLine($"Книга под названием \"{choosenBook.Title}\" успешно удалена!");
+                choosenBook = null;
+            }
         }
         else
             Console.WriteLine("Не выбрана книга для совершения действия!");
