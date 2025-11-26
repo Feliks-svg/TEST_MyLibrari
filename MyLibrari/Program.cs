@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
+using System.Text.Json;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using static System.Net.Mime.MediaTypeNames;
@@ -547,7 +548,39 @@ class LibraryFileHandler
 {
     public static void LoadFromJson(string path, HashSet<Book> list)
     {
+        try
+        {
+            if (!File.Exists(path))
+            {
+                Console.WriteLine($"Путь к файлу не найден в:{path}");
+                return;
+            }
 
+            var json = File.ReadAllText(path);
+            JsonSerializerOptions options = new()
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            var books = JsonSerializer.Deserialize<List<Book>>(json, options);
+            if (books == null)
+            {
+                Console.WriteLine("Файл пуст или повреждён!");
+                return;
+            }
+
+            list.Clear();
+            foreach (var book in books)
+                list.Add(book);
+
+            Book.RecalculateNextId(list);
+
+            Console.WriteLine($"Успешно загружено {list.Count} книг из файла!");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Ошибка при загрузке: {ex.Message}");
+        }
     }
 
     public static void SaveToJson(string path, HashSet<Book> list)
