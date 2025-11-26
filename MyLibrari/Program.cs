@@ -72,14 +72,14 @@ while (true)
         case 7:
             {
                 Console.Clear();
-                Console.WriteLine("Плейсхолдер загрузки из текстовика");
+                LibraryFileHandler.LoadFromJson("", library);
                 UI.AwaitingInput();
                 break;
             }
         case 8:
             {
                 Console.Clear();
-                Console.WriteLine("плейсхолдре сохранения в текстовик");
+                LibraryFileHandler.SaveToJson("", library);
                 UI.AwaitingInput();
                 break;
             }
@@ -545,12 +545,12 @@ class LibrarySearcher
 
 class LibraryFileHandler
 {
-    public void LoadToJSON(string path, HashSet<Book> list)
+    public static void LoadFromJson(string path, HashSet<Book> list)
     {
 
     }
 
-    public void SaveToJSON(string path, HashSet<Book> list)
+    public static void SaveToJson(string path, HashSet<Book> list)
     {
 
     }
