@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection.Metadata;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
 using System.Xml.Linq;
@@ -73,14 +74,16 @@ while (true)
         case 7:
             {
                 Console.Clear();
-                LibraryFileHandler.LoadFromJson("", library);
+                LibraryFileHandler.LoadFromJson("library.json", library);
+                choosenBook = null;
                 UI.AwaitingInput();
                 break;
             }
         case 8:
             {
                 Console.Clear();
-                LibraryFileHandler.SaveToJson("", library);
+                LibraryFileHandler.SaveToJson("library.json", library);
+                choosenBook = null;
                 UI.AwaitingInput();
                 break;
             }
@@ -548,6 +551,11 @@ class LibraryFileHandler
 {
     public static void LoadFromJson(string path, HashSet<Book> list)
     {
+        Console.WriteLine("Внимание! При загрузке библиотеке будет ПОЛНОСТЬЮ ПЕРЕСЕНО ЕЁ СОСТОЯНИЕ. Несохранённые данные будут УНИЧТОЖЕНЫ! Продолжить? (y/n)");
+        string userInput = "";
+        DataHandler.StringDataHandler(ref userInput);
+        if (userInput.ToLower() != "y")
+            return;
         try
         {
             if (!File.Exists(path))
@@ -585,7 +593,29 @@ class LibraryFileHandler
 
     public static void SaveToJson(string path, HashSet<Book> list)
     {
+        Console.WriteLine("Будет полностью сохранено состояние текущей библиотеки. Продолжить? (y/n)");
+        string userInput = "";
+        DataHandler.StringDataHandler(ref userInput);
+        if (userInput != "y")
+            return;
+        try
+        {
+            JsonSerializerOptions option = new()
+            {
+                WriteIndented = true,
+                PropertyNameCaseInsensitive = true
+            };  
 
+            var books = list.OrderBy(b =>  b.Id).ToList();
+            var json = JsonSerializer.Serialize(books, option);
+            File.WriteAllText(path, json);
+
+            Console.WriteLine($"Успешно сохранено {books.Count} книг в файл!");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Ошибка сохранения: {ex.Message}");
+        }
     }
 }
 
@@ -652,8 +682,8 @@ static class UI
              4. Взять/Вернуть выбранную книгу
              5. Удалить выбранную книгу
              6. Найти и выбрать книгу
-             7. Загрузить библиотеку из текстового файла
-             8. Сохранить библиотеку в текстовый файл
+             7. Загрузить библиотеку из JSON файла
+             8. Сохранить библиотеку в JSON файл
              9. Выйти
             """);
         if (choosenBook != null)
