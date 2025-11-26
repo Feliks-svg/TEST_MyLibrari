@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 using static System.Net.Mime.MediaTypeNames;
 
 HashSet<Book> library = [];
@@ -97,8 +99,8 @@ while (true)
 
 class Book
 {
-    public int Id { get; set; }
-    private static ushort _nextId = 1;
+    public uint Id { get; set; }
+    private static uint _nextId = 1;
     public string Title { get; set; }
     public string Author { get; set; }
     public ushort Year { get; set; }
@@ -106,6 +108,11 @@ class Book
     public ushort AmountOrigin { get; set; }
     public ushort AmountLeft { get; set; }
     public bool IsChoosen { get; set; }
+
+    public Book()
+    {
+
+    }
 
     public Book(string title, string author, ushort year, string genre, ushort amount)
     {
@@ -123,6 +130,23 @@ class Book
     {
         if (choosenBook == null) return false;
         else return true;
+    }
+
+    public bool Equals(Book other)
+    {
+        if (other is null) return false;
+        return this.Id == other.Id;
+    }
+
+    public override bool Equals(object obj) => Equals(obj as Book);
+    public override int GetHashCode() => Id.GetHashCode();
+
+    public static void RecalculateNextId(IEnumerable<Book> books)
+    {
+        uint max = 0;
+        if (books != null && books.Any())
+            max = books.Max(b => b.Id);
+        _nextId = Math.Max(1, max + 1);
     }
 }
 
@@ -521,7 +545,12 @@ class LibrarySearcher
 
 class LibraryFileHandler
 {
-    public void ReadTextFile(string path, HashSet<Book> list)
+    public void LoadToJSON(string path, HashSet<Book> list)
+    {
+
+    }
+
+    public void SaveToJSON(string path, HashSet<Book> list)
     {
 
     }
