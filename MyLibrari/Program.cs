@@ -6,6 +6,8 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 using static System.Net.Mime.MediaTypeNames;
 
+//i hate myself
+
 HashSet<Book> library = [];
 Book choosenBook = null;
 
