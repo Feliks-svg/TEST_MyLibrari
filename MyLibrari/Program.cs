@@ -795,5 +795,14 @@ class Loc
 {
     private static string _lang = "en";
 
-    private static readonly Dictionary<string, (string ru, string en)> _dict;
+    private static readonly Dictionary<string, (string ru, string en)> _dict = new()
+    {
+
+    };
+
+    public static void SetLanguage(string lang)
+    {
+        if (lang == "ru") _lang = "ru";
+        else _lang = "en";
+    }
 }
