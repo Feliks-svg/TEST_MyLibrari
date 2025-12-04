@@ -3,13 +3,13 @@
 HashSet<Book> library = [];
 Book choosenBook = null;
 
-library.Add(new Book("1", "1", 1, "1", 1));//Debug
-library.Add(new Book("2", "2", 2, "2", 2));//Debug
-library.Add(new Book("3", "3", 3, "3", 3));//Debug
-library.Add(new Book("4", "4", 4, "4", 4));//Debugh
-library.Add(new Book("5", "5", 5, "6", 5));//Debug
-library.Add(new Book("6", "5", 6, "6", 6));//Debugh
-library.Add(new Book("7", "7", 6, "7", 7));//Debugh
+//library.Add(new Book("1", "1", 1, "1", 1));//Debug
+//library.Add(new Book("2", "2", 2, "2", 2));//Debug
+//library.Add(new Book("3", "3", 3, "3", 3));//Debug
+//library.Add(new Book("4", "4", 4, "4", 4));//Debugh
+//library.Add(new Book("5", "5", 5, "6", 5));//Debug
+//library.Add(new Book("6", "5", 6, "6", 6));//Debugh
+//library.Add(new Book("7", "7", 6, "7", 7));//Debugh
 
 UI.SelectLanguage();
 
