@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
-using System.Threading;
+﻿using System.Text.Json;
 
-HashSet<Book> library = new HashSet<Book>();
+HashSet<Book> library = [];
 Book choosenBook = null;
 
 library.Add(new Book("1", "1", 1, "1", 1));//Debug
