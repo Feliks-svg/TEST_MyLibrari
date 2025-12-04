@@ -815,4 +815,13 @@ class Loc
         if (lang == "ru") _lang = "ru";
         else _lang = "en";
     }
+
+    public static string T(string key) //T - Translation;
+    {
+        if (_dict.TryGetValue(key, out var pair))
+            return _lang == "en" ? pair.en : pair.ru;
+        return $"Missing \"{key}\"";
+    }
+
+    public static string Tf(string key, params object[] args) => string.Format(T(key), args); //Tf - Translation with formatting
 }
