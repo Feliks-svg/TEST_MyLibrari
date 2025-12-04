@@ -17,6 +17,8 @@ library.Add(new Book("5", "5", 5, "6", 5));//Debug
 library.Add(new Book("6", "5", 6, "6", 6));//Debugh
 library.Add(new Book("7", "7", 6, "7", 7));//Debugh
 
+UI.SelectMenuOption();
+
 while (true)
 {
     Console.Clear();
@@ -688,6 +690,14 @@ static class UI
             """);
         if (choosenBook != null)
             UI.ShowChoosenBook(choosenBook);
+    }
+
+    public static void SetLanguageMenuOption()
+    {
+        Console.WriteLine("Please, select language (1)/Пожалуйста, выберите язык (2):");
+        byte userInput = UI.SelectMenuOption();
+        if (userInput == 2) Loc.SetLanguage("en");
+        else Loc.SetLanguage("ru");
     }
 }
 
