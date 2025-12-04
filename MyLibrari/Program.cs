@@ -790,3 +790,10 @@ static class DataHandler
         }
     }
 }
+
+class Loc
+{
+    private static string _lang = "en";
+
+    private static readonly Dictionary<string, (string ru, string en)> _dict;
+}
