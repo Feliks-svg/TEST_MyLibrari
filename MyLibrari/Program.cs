@@ -809,6 +809,81 @@ class Loc
 
     private static readonly Dictionary<string, (string ru, string en)> _dict = new()
     {
+         { "menu.welcome", (
+            "Добро пожаловать в MyLibrary!\nЧто вы хотите сделать?\n 1. Показать список книг\n 2. Добавить книгу\n 3. Редактировать данные выбранной книги\n 4. Взять/Вернуть выбранную книгу\n 5. Удалить выбранную книгу\n 6. Найти и выбрать книгу\n 7. Загрузить библиотеку из JSON файла\n 8. Сохранить библиотеку в JSON файл\n 9. Выйти",
+            "Welcome to MyLibrary!\nWhat would you like to do?\n 1. Show book list\n 2. Add a book\n 3. Edit selected book\n 4. Borrow/Return selected book\n 5. Remove selected book\n 6. Find and select a book\n 7. Load library from JSON file\n 8. Save library to JSON file\n 9. Exit") },
+
+        { "select.language", ("Пожалуйста, выберите язык (1)/Please, select language (2):", "Please, select language (1)/Пожалуйста, выберите язык (2):") },
+        { "prompt.invalid_digit", ("Неверный выбор. Введите цифру.", "Invalid choice. Enter a digit.") },
+        { "list.header", ("Cписок всех книг в библиотеке:", "List of all books in the library:") },
+        { "book.format", ("Книга {0}: {1}, Автор: {2}, Год: {3}, Жанр: {4}, Кол-во: {5}/{6}", "Book {0}: {1}, Author: {2}, Year: {3}, Genre: {4}, Qty: {5}/{6}") },
+        { "divider", ("------------------------------", "------------------------------") },
+        { "awaiting.input", ("Ожидание ввода...", "Awaiting input...") },
+        { "show.selected", ("Выбрана книга: \"{0}\"", "Selected book: \"{0}\"") },
+        { "exiting", ("Закрытие...", "Closing...") },
+        { "invalid.input", ("Неверный ввод!", "Invalid input!") },
+
+        { "input.cannot_empty", ("Входные данные не могут быть пустыми!", "Input cannot be empty!") },
+        { "input.only_letters_digits", ("Входные данные могут содержать только буквы и цифры!", "Input may only contain letters and digits!") },
+        { "enter.correct_number", ("Введите корректное числовое значение!", "Enter a valid numeric value!") },
+        { "value.out_of_range", ("Значение слишком большое или слишком маленькое!", "Value too large or too small!") },
+        { "choose.book.for_action", ("Не выбрана книга для совершения действия!", "No book selected for the action!") },
+        { "no_copies_available", ("Нету доступных экземпляров книги!", "No available copies of the book!") },
+        { "borrow.request_amount", ("Сколько экземпляров книги вы хотите позаимствовать? (0 для отмены)", "How many copies would you like to borrow? (0 to cancel)") },
+        { "cannot_borrow_more", ("Невозможно взять больше книг, чем осталось в библиотеке!", "Cannot borrow more books than are available!") },
+        { "success.borrowed", ("Успешно позаимствована книга \"{0}\" в количестве {1}", "Successfully borrowed book \"{0}\" in quantity {1}") },
+        { "return.prompt", ("Возможно вернуть экземпляр книги в размере {0}! Желаете продолжить? (y/n)", "You can return {0} copies! Continue? (y/n)") },
+        { "return.possible", ("Возможно вернуть {0} экземпляров. Введите желаемое количество экземпляров для возврата: (0 для отмены)", "You can return {0} copies. Enter the number to return: (0 to cancel)") },
+        { "cannot_return_more", ("Невозможно вернуть экземпляров больше изначального количества!", "Cannot return more copies than the original amount!") },
+        { "success.returned", ("Успешно возвращена книга \"{0}\" в количестве {1}", "Successfully returned book \"{0}\" in quantity {1}") },
+
+        { "confirm.delete", ("Вы действительно хотите удалить выбранную книгу? (y/n)", "Do you really want to delete the selected book? (y/n)") },
+        { "success.deleted", ("Книга под названием \"{0}\" успешно удалена!", "Book titled \"{0}\" was successfully deleted!") },
+
+        { "edit.prompt", ("Какой параметр книги вы хотите отредактировать?\n1. Название\n2. Автор\n3. Год\n4. Жанр", "Which book parameter do you want to edit?\n1. Title\n2. Author\n3. Year\n4. Genre") },
+        { "enter.new.title", ("Введите новое название:", "Enter new title:") },
+        { "enter.new.author", ("Введите нового автора:", "Enter new author:") },
+        { "enter.new.year", ("Введите новый год:", "Enter new year:") },
+        { "enter.new.genre", ("Введите новый жанр:", "Enter new genre:") },
+        { "success.title_changed", ("Название успешно заменено на \"{0}\"", "Title successfully changed to \"{0}\"") },
+        { "success.author_changed", ("Автор успешно замененён на \"{0}\"", "Author successfully changed to \"{0}\"") },
+        { "success.year_changed", ("Год успешно заменён на\"{0}\"", "Year successfully changed to \"{0}\"") },
+        { "success.genre_changed", ("Жанр успешно замененён на \"{0}\"", "Genre successfully changed to \"{0}\"") },
+
+        { "search.by.parameter", ("Выберите параметр, по которому вы хотите найти желаемую книгу:\n1. По ID\n2. По названию\n3. По автору\n4. По году\n5. По жанру\n6. Выйти", "Choose parameter to search by:\n1. By ID\n2. By title\n3. By author\n4. By year\n5. By genre\n6. Exit") },
+        { "enter.id", ("Введите идентификатор желаемой книги: ", "Enter the ID of the desired book: ") },
+        { "book.not_found_id", ("Не удалось найти книгу под идентификатором {0}", "Could not find a book with ID {0}") },
+        { "enter.title", ("Введите название желаемой книги: ", "Enter the title of the desired book: ") },
+        { "book.not_found_title", ("Не удалось найти книгу под названием {0}", "Could not find a book titled {0}") },
+        { "enter.author", ("Введите имя и фамилию автора:", "Enter the author's name:") },
+        { "no_books_by_author", ("Не удалось ни одной книги за авторством \"{0}\"", "No books found by author \"{0}\"") },
+        { "enter.year", ("Введите год книги:", "Enter the book year:") },
+        { "no_books_by_year", ("Не удалось найти ни одной книги за авторством \"{0}\"", "No books found for year \"{0}\"") },
+        { "enter.genre", ("Введите жанр книги:", "Enter book genre:") },
+        { "no_books_by_genre", ("Не удалось найти ни одной книги за авторством \"{0}\"", "No books found for genre \"{0}\"") },
+
+        { "load.confirmation", ("Внимание! При загрузке библиотеке будет ПОЛНОСТЬЮ ПЕРЕСЕНО ЕЁ СОСТОЯНИЕ. Несохранённые данные будут УНИЧТОЖЕНЫ! Продолжить? (y/n)", "Warning! Loading will FULLY REPLACE the library state. Unsaved data will be LOST! Continue? (y/n)") },
+        { "file.not_found", ("Путь к файлу не найден в:{0}", "File path not found: {0}") },
+        { "file.empty_or_corrupted", ("Файл пуст или повреждён!", "File is empty or corrupted!") },
+        { "load.success", ("Успешно загружено {0} книг из файла!", "Successfully loaded {0} books from file!") },
+        { "load.error", ("Ошибка при загрузке: {0}", "Error during loading: {0}") },
+
+        { "save.confirmation", ("Будет полностью сохранено состояние текущей библиотеки. Продолжить? (y/n)", "This will save the entire current library state. Continue? (y/n)") },
+        { "save.success", ("Успешно сохранено {0} книг в файл!", "Successfully saved {0} books to file!") },
+        { "save.error", ("Ошибка сохранения: {0}", "Error saving: {0}") },
+
+        { "input.invalid", ("Невернный ввод!", "Invalid input!") },
+        { "select.choose_book_question", ("Хотите выбрать найденную книгу для дальнейшего взаимодействия? (y/n)", "Do you want to select the found book for further interaction? (y/n)") },
+        { "book.selected_success", ("Книга \"{0}\" успешно выбрана!", "Book \"{0}\" successfully selected!") },
+        { "add.enter_params", ("Введите параметры для добавления книги!", "Enter parameters to add a book!") },
+        { "enter.book.title", ("Введите название книги:", "Enter book title:") },
+        { "enter.book.author", ("Введите имя автора:", "Enter author name:") },
+        { "enter.book.year", ("Введите год создания:", "Enter year of publication:") },
+        { "enter.book.genre", ("Введите название жанра:", "Enter genre name:") },
+        { "enter.book.amount", ("Введите количество экземпляров:", "Enter number of copies:") },
+        { "book.created", ("Книга под названием \"{0}\" успешно создана!", "Book titled \"{0}\" successfully created!") },
+        { "book.select.multiple", ("Введите идентификтор книги, которую вы хотите выбрать (0 для завершения): ", "Enter the ID of the book you want to select (0 to finish): ") },
+        { "no_book_with_id", ("Нету книги с указанным идентификатором!", "No book with the specified ID!") }
 
     };
 
